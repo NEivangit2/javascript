@@ -22,7 +22,15 @@ class Card:
         if self.mast == other.mast:
             return self.value > other.value
         return self.mast == trump and other.mast != trump
-    
+
+    def __eq__(self, other):
+        return isinstance(other, Card) and self.rank == other.rank and self.suit == other.suit
+
+    def __hash__(self):
+        return hash((self.rank, self.suit))
+
+    def __repr__(self):
+        return f'{self.rank}{self.suit}'
 
 def make_deck():
     cards = [Card(mast, rank) for mast in MAST for rank in COLODA]

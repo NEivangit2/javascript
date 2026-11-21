@@ -1,0 +1,35 @@
+# example below, replace it with your solution
+d, w = map(int, input().split()) #kilo litri
+n = int(input()) #zapravki
+c = list(map(int, input('').split())) #cina palne
+x = list(map(int, input('').split())) #vid
+
+stations = sorted(zip(x, c))
+stations.append((d, 0))
+
+m = len(stations)
+
+INF = float('inf')
+dp = [(INF, INF)]*m
+
+for i in range(m):
+    if stations[i][0] == 0:
+        dp[i] = (0,0)
+
+for i in range(m):
+    if dp[i][0] == INF:
+        continue
+    xi, ci = stations[i]
+    current_cost, current_tank = dp[i]
+    for j in range(i + 1, m):
+        xj, _ = stations[j]
+        dist = xj - xi #distance zapravki
+        fuel = w * dist #palne
+        cost = fuel * ci #vartist
+        
+        new_cost = cost + current_cost
+        new_tank = max(fuel, current_tank)
+
+        if (new_cost, new_tank) < dp[j]:
+            dp[j] = (new_cost, new_tank)
+print(dp[m-1][1])
